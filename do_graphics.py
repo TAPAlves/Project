@@ -17,6 +17,7 @@ class do_graphics:
 
     def __init__(self):
         self.media={}
+        self.sd={}
         self.results={}
         self.proj=do_seqs()
         self.mutationsPos=[]
@@ -51,7 +52,7 @@ class do_graphics:
             if mhc_mol.value is not None:#celulas com valor
                 mhc.append(mhc_mol.value)
         pos=self.proj.mutations.keys()#vai buscar a classe anterior as posicoes das mutacoes
-        ######################pos=[172]
+        #########pos=[132]
         for p in pos:
             search=sheet_norm.columns[0]
             for cell in range(len(search)):
@@ -138,8 +139,28 @@ class do_graphics:
                     memory.append(float(soma/num))
                     self.media[pos][state][hla]=[]#limpar a lista
                     self.media[pos][state][hla].append(memory[0])
-                    memory=[]#limpar a memoria          
-                
+                    memory=[]#limpar a memoria
+                    
+    
+    def do_sd(self):#tem de se dar o inteiro
+        '''
+        Funcao que dados os resultados importados, calcula o seu desvio padrão
+        e retorna os dicionarios já existentes mas apenas com o valor do desvio dos valores de entrada
+        '''
+        memory=[]
+        hlavalue=[]
+        self.sd=self.results.copy()#criar copia de dicionario
+        for pos in self.sd.keys():#posicoes
+            for state in self.sd[pos]:#normal e mutado
+                for hla in self.sd[pos][state]:#hla
+                    for i in range(len(self.sd[pos][state][hla])):
+                        hlavalue.append(self.sd[pos][state][hla][i])  
+                    sd=np.std(hlavalue)
+                    memory.append(int(sd))
+                    self.sd[pos][state][hla]=[]#limpar a lista
+                    self.sd[pos][state][hla].append(memory[0])
+                    memory=[]#limpar a memoria
+                    hlavalue=[]
                 
     
     def variables_for_graph(self,pos):
@@ -150,7 +171,7 @@ class do_graphics:
         maximo=0#eixo y
         hlaList=[]#hla para legenda
         normal=[]#valores normais
-        mutated=[]#valores mutados        
+        mutated=[]#valores mutados       
         for state in self.media[pos].keys():#normal e mutado
             if len(hlaList)==0:
                 for hla in self.media[pos][state].keys():#
@@ -194,17 +215,26 @@ class do_graphics:
             width=0.35 #largura das barras
             ## the bars
             bar1 = subplot.bar(ind, normal, width,color='lightblue')
+                               #yerr=stdesvn
+                               #,error_kw=dict(elinewidth=9,ecolor='black'))
             bar2 = subplot.bar(ind+width, mutated, width,color='darkred')
+                               #yerr=stdesvm)
+                              #error_kw=dict(elinewidth=2,ecolor='black'))
             # axes and labels
             subplot.set_xlim(-width,len(ind)+width)#tamanho do eixo do x                                
             subplot.set_ylim(0,maximo)#calcular o valor maior para colocar aqui (pela função)
-            subplot.set_ylabel('nM')
+            subplot.set_ylabel('HLA binding affinity (nM)')
             title='%s-mer peptides affinity to HLA'%pos            
             subplot.set_title(title)# colocar aqui o tamanho (isto tem de estar num ciclo)
             xNames = [i for i in hlaList]#Todos os HLAs
             subplot.set_xticks(ind+width)#posição da legenda
             xLegend = subplot.set_xticklabels(xNames)
             plot.setp(xLegend, rotation=30, fontsize=10)
+            if xNames[0][0]=='H':
+                xl=subplot.set_xlabel('HLAs class I')
+            else:
+                xl=subplot.set_xlabel('HLA class II')
+            plot.setp(xl,rotation=0,fontsize=10)
             ## add a legend
             subplot.legend( (bar1[0], bar2[0]), ('WildType', 'Mutated') )
             plot.show()
@@ -390,9 +420,9 @@ def main():
                 c1=[]
                 for pos in a.split(','):
                     a1.append(pos)
-                    b1.append(0)#so interessa saber as posicoes nesta fase
-                    c1.append(0)
-                    p.create_mutations(a1,b1,c1)
+                    b1.append('A')#so interessa saber as posicoes nesta fase
+                    c1.append('A')
+                p.proj.create_mutations(a1,b1,c1)
                 fn=raw_input('\nInsert the name of the WildType file (example : abcd.xlsx):\n')
                 fm=raw_input('\nInsert the name of the Mutated file (example : abcd.xlsx):\n')
                 p.import_results(fn,fm)#importar os resultados
@@ -421,10 +451,15 @@ if __name__=='__main__':
         p=do_graphics()
         #p.variables_for_graph(8)
         #print (p.import_results('23780_NetMHCpan_NORMAL_STATE.xls','0'))
-        print p.import_results('afile.xlsx', 'afilem.xlsx')
-        p.do_mean()        
-        p.do_graphics()
+        print p.import_results('132normalI.xlsx', '132mutadoI.xlsx')
+        p.do_mean()
+        #print p.media
+        #print p.sd        
+        #p.do_graphics()
+        #p.do_sd()
         #p.do_mean()
+        #print p.variables_for_graph(8)
+        p.do_graphics()
     #test1()
     
     main()
