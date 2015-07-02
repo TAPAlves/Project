@@ -220,7 +220,7 @@ class do_graphics:
             bar2 = subplot.bar(ind+width, mutated, width,color='darkred')
                                #yerr=stdesvm)
                               #error_kw=dict(elinewidth=2,ecolor='black'))
-            # axes and labels
+            # axes and labels4
             subplot.set_xlim(-width,len(ind)+width)#tamanho do eixo do x                                
             subplot.set_ylim(0,maximo)#calcular o valor maior para colocar aqui (pela função)
             subplot.set_ylabel('HLA binding affinity (nM)')
@@ -325,8 +325,8 @@ def main():
             if ask=='Y':
                 try:
                     a=raw_input('\nInsert the mutation position(s):(example: 1,2,3)\n')
-                    b=raw_input('\nInsert the initial aminoacid for each position above(with the same order):(example: A,B,C)\n')
-                    c=raw_input('\nInsert the final aminoacid for each position above(with the same order):(example: A,B,C)\n')
+                    b=raw_input('\nInsert the initial aminoacid for each position above(with the same order):(example: A,B,C)\n').upper()
+                    c=raw_input('\nInsert the final aminoacid for each position above(with the same order):(example: A,B,C)\n').upper()
                     a1=[]
                     b1=[]
                     c1=[]
@@ -338,7 +338,7 @@ def main():
                         c1.append(pos)
                     p.proj.create_mutations(a1,b1,c1)
                     p.proj.induce_mutation()
-                    p.proj.create_file_with_seq('MutatedProtein',0,mutated=True)
+                    p.proj.create_file_with_seq('',0,mutated=True)
                 except:
                     print ('Option 2/option 4 not runned! Please repeat one of the options!')
                     
@@ -349,8 +349,8 @@ def main():
                     num=raw_input('\nInsert GI number:\n')
                     p.proj.create_file_with_seq(num)
                     a=raw_input('\nInsert the mutation position(s):(example: 1,2,3)\n')
-                    b=raw_input('\nInsert the initial aminoacid for each position above(with the same order):(example: A,B,C)\n')
-                    c=raw_input('\nInsert the final aminoacid for each position above(with the same order):(example: A,B,C)\n')
+                    b=raw_input('\nInsert the initial aminoacid for each position above(with the same order):(example: A,B,C)\n').upper()
+                    c=raw_input('\nInsert the final aminoacid for each position above(with the same order):(example: A,B,C)\n').upper()
                     a1=[]
                     b1=[]
                     c1=[]
@@ -371,8 +371,8 @@ def main():
                         ask3=raw_input('\nInsert GI number:\n')
                         p.proj.create_file_with_seq(ask3)
                         a=raw_input('\nInsert the mutation position(s):(example: 1,2,3)\n')
-                        b=raw_input('\nInsert the initial aminoacid for each position above(with the same order):(example: A,B,C)\n')
-                        c=raw_input('\nInsert the final aminoacid for each position above(with the same order):(example: A,B,C)\n')
+                        b=raw_input('\nInsert the initial aminoacid for each position above(with the same order):(example: A,B,C)\n').upper()
+                        c=raw_input('\nInsert the final aminoacid for each position above(with the same order):(example: A,B,C)\n').upper()
                         a1=[]
                         b1=[]
                         c1=[]
@@ -390,8 +390,8 @@ def main():
                         ask2=raw_input('\nInsert a protein name:\n')
                         p.proj.create_file_with_seq(0,ask2)
                         a=raw_input('\nInsert the mutation position(s):(example: 1,2,3)\n')
-                        b=raw_input('\nInsert the initial aminoacid for each position above(with the same order):(example: A,B,C)\n')
-                        c=raw_input('\nInsert the final aminoacid for each position above(with the same order):(example: A,B,C)\n')
+                        b=raw_input('\nInsert the initial aminoacid for each position above(with the same order):(example: A,B,C)\n').upper()
+                        c=raw_input('\nInsert the final aminoacid for each position above(with the same order):(example: A,B,C)\n').upper()
                         a1=[]
                         b1=[]
                         c1=[]
